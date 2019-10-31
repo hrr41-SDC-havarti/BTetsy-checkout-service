@@ -14,12 +14,26 @@ class ProductDetailsModel {
     return productData;
   }
 
-  async addProduct(productId) {
-    const productData = await this.model.findOne({ productId });
-    if (productData) {
-      throw new Error('Product with that ID already in DB');
+  async createProduct(productData) {
+    try {
+      const newProduct = await this.model.create(productData);
+      return newProduct;
+    } catch (error) {
+      console.error(error);
     }
-    return productData;
+  }
+
+  async updateProduct(productId, productData) {
+    try {
+      const updatedProduct = await this.model.update(
+        { productId },
+        productData,
+        { new: true },
+      );
+      return updatedProduct;
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   async deleteProduct(productId) {

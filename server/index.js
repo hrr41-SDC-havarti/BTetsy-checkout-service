@@ -37,6 +37,33 @@ app.delete('/api/checkout/:productId/details', (req, res) => {
     });
 });
 
+app.post('/api/checkout/:productId/details', (req, res) => {
+  const { productId } = req.params;
+  const product = req.body;
+  product.productId = productId;
+
+  Model.createProduct(product)
+    .then((newProduct) => res.status(200).send(`Product with id of ${newProduct.productId} created`))
+    .catch(() => {
+      res.status(500);
+      res.send('Product not created');
+    });
+});
+
+app.patch('/api/checkout/:productId/details', (req, res) => {
+  const { productId } = req.params;
+  const productData = req.body;
+
+  console.log('patching');
+
+  Model.updateProduct(productId, productData)
+    .then((updatedProduct) => res.status(200).send(updatedProduct))
+    .catch(() => {
+      res.status(500);
+      res.send('Product not created');
+    });
+});
+
 app.listen(PORT, () => {
   console.log(`Listening at port ${PORT}`);
 });

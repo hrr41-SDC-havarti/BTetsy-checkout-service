@@ -26,7 +26,7 @@ class dataGenerator {
       productOptions: this.generateProductOptions(),
       personalization: this.generateBoolean(),
       availableQuantity: this.generateAvailableQuantity(),
-      onOrder: this.generateOnOrderQuantity()
+      onOrder: this.generateOnOrderQuantity(),
     };
     return product;
   }
