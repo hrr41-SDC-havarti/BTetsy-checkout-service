@@ -16,7 +16,7 @@ const productDetailsSchema = new mongoose.Schema({
     {
       optionName: String,
       choices: [
-        { choice: String, adjustedPrice: Number }
+        { choice: String, adjustedPrice: Number },
       ],
     },
   ],

@@ -1,64 +1,61 @@
 /* eslint-disable class-methods-use-this */
 const mongoose = require('mongoose');
+const faker = require('faker');
 const productDetails = require('./index.js');
 const dataSources = require('./fakeDataSources.js');
 
+
 class dataGenerator {
-  constructor() {
+  constructor(seed) {
     // defining valid inputs to pull fake data from
-    this.sellerNames = dataSources.sellerNames;
-    this.productNames = dataSources.productNames;
+    // this.sellerNames = dataSources.sellerNames;
+    // this.productNames = dataSources.productNames;
     this.badges = ['Bestseller', 'Badseller', null];
     this.productOptions = dataSources.productOptions;
+    faker.seed(seed);
   }
 
-  generateProduct() {
+  generateProduct(idx) {
     let product = {
-      // productId: this.generateProductId(),
+      productId: idx,
       sellerId: this.generateSellerId(),
       sellerName: this.generateSellerName(),
       averageReviewScore: this.generateAverageReviewScore(),
       numberReviews: this.generateNumReviews(),
       itemName: this.generateProductName(),
       badge: this.generateBadge(),
-      itemPrice: this.generateItemPrice(10,301),
+      itemPrice: this.generatePriceInCents(1000, 30000),
       freeShipping: this.generateBoolean(),
-      productOptions: this.generateProductOptions(),
+      productOptions: idx,
       personalization: this.generateBoolean(),
       availableQuantity: this.generateAvailableQuantity(),
-      onOrder: this.generateOnOrderQuantity()
+      onOrder: this.generateOnOrderQuantity(),
     };
     return product;
   }
 
-  getRandomInt(lowerLimit, upperLimit) { // returns integer between lower limit and upper limit - 1
-    return Math.floor(Math.random() * (upperLimit - lowerLimit) + lowerLimit);
-  }
-
-  generateProductId() {
-    return this.getRandomInt(1, 100000);
+  getRandomInt(lowerLimit, upperLimit) { // returns integer between lower limit and upper limit
+    return faker.random.number(upperLimit - lowerLimit) + lowerLimit;
   }
 
   generateSellerId() {
-    return this.getRandomInt(1,1000);
+    return this.getRandomInt(1, 1000);
   }
 
   generateSellerName() {
-    let nameIdx = this.getRandomInt(0, this.sellerNames.length);
-    return this.sellerNames[nameIdx];
+    return faker.name.firstName() + ' ' + faker.name.lastName();
   }
 
   generateAverageReviewScore() {
-    return this.getRandomInt(1, 6);
+    return this.getRandomInt(1, 5);
   }
 
   generateNumReviews() {
-    return this.getRandomInt(0, 5001);
+    return this.getRandomInt(0, 5000);
   }
 
   generateProductName() {
-    const nameIdx = this.getRandomInt(0, this.productNames.length);
-    return this.productNames[nameIdx];
+    return faker.commerce.productName();
   }
 
   generateBadge() {
@@ -66,17 +63,16 @@ class dataGenerator {
     return this.badges[badgeIdx];
   }
 
-  generateItemPrice(lowerLimit, upperLimit) {
-    let price = Math.random() * (upperLimit - lowerLimit) + lowerLimit;
-    return Number(price.toFixed(2));
+  generatePriceInCents(lowerLimit, upperLimit) {
+    return this.getRandomInt(lowerLimit, upperLimit);
   }
 
   generateBoolean() {
-    return Boolean(this.getRandomInt(0, 2));
+    return faker.random.boolean();
   }
 
   generateProductOptions() {
-    let numOptions = this.getRandomInt(1, 4);
+    let numOptions = this.getRandomInt(1, 3);
     let optionIdxs = [];
     let idx = this.getRandomInt(0, this.productOptions.length);
     optionIdxs.push(idx);
@@ -90,7 +86,7 @@ class dataGenerator {
     options.forEach((option) => {
       if (option.optionName === 'Size' || option.optionName === 'Material') {
         option.choices.forEach((choice) => {
-          choice.adjustedPrice = this.generateItemPrice(10, 301);
+          choice.adjustedPrice = this.generatePriceInCents(1000, 30000);
         });
       }
     });
@@ -98,11 +94,11 @@ class dataGenerator {
   }
 
   generateAvailableQuantity() {
-    return this.getRandomInt(1, 201);
+    return this.getRandomInt(1, 200);
   }
 
   generateOnOrderQuantity() {
-    return this.getRandomInt(0, 26);
+    return this.getRandomInt(0, 25);
   }
 }
 
