@@ -1,11 +1,11 @@
 /* eslint-disable class-methods-use-this */
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const faker = require('faker');
 const productDetails = require('./index.js');
 const dataSources = require('./fakeDataSources.js');
 
 
-class dataGenerator {
+class DataGenerator {
   constructor(seed) {
     // defining valid inputs to pull fake data from
     // this.sellerNames = dataSources.sellerNames;
@@ -103,16 +103,16 @@ class dataGenerator {
 }
 
 // generate products to populate db
-let generator = new dataGenerator();
-let products = [];
-let product;
-for (let i = 0; i < 150; i++) {
-  product = generator.generateProduct();
-  product.productId = i + 1;
-  products.push(product);
-}
-productDetails.create(products)
-  .then(() => mongoose.connection.close())
-  .catch((err) => console.log(err));
+// let generator = new DataGenerator();
+// let products = [];
+// let product;
+// for (let i = 0; i < 150; i++) {
+//   product = generator.generateProduct();
+//   product.productId = i + 1;
+//   products.push(product);
+// }
+// productDetails.create(products)
+//   .then(() => mongoose.connection.close())
+//   .catch((err) => console.log(err));
 
-module.exports = dataGenerator;
+module.exports = DataGenerator;

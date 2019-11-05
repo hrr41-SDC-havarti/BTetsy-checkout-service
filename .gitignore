@@ -29,3 +29,5 @@ dist/
 .eslintrc.json
 aws-keys.json
 
+productDetails.csv
+*.cvs
